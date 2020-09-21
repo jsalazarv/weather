@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import config from "../config";
 export default {
   name: "Map",
   props: {
@@ -20,9 +21,9 @@ export default {
   }),
   methods: {
     init() {
-      const API_KEY = process.env.VUE_APP_GOOGLE_MAPS_API_KEY;
+      const API_KEY = config.map.keys.api_key;
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=initMap&language=en&region=MX`;
       script.defer = true;
 
       window.initMap = () => this.initMap();
@@ -67,14 +68,25 @@ export default {
       this.marker.setPosition(coords);
     },
     initMap() {
-      if (this.coordinates.latitude === null || this.coordinates.longitude === null) {
+      if (
+        this.coordinates.latitude === null ||
+        this.coordinates.longitude === null
+      ) {
         this.setCurrentCoordinates();
-      } {
-        this.coords = { lat: this.coordinates.latitude, lng: this.coordinates.longitude };
+      }
+      {
+        this.coords = {
+          lat: this.coordinates.latitude,
+          lng: this.coordinates.longitude
+        };
       }
       /*global google */
       this.map = new google.maps.Map(this.$refs.map, {
-        zoom: 5
+        zoom: 4,
+        zoomControl: true,
+        streetViewControl: false,
+        fullscreenControl: false,
+        styles: config.map.styles
       });
       this.marker = new google.maps.Marker({
         map: this.map,
@@ -88,13 +100,16 @@ export default {
   },
   watch: {
     coords(newCoordinates) {
-      if(newCoordinates.lat && newCoordinates.lng) {
+      if (newCoordinates.lat && newCoordinates.lng) {
         this.moveMarker(newCoordinates);
         this.map.panTo(newCoordinates);
       }
     },
     coordinates(newCoordinates) {
-      this.coords = { lat: newCoordinates.latitude, lng: newCoordinates.longitude };
+      this.coords = {
+        lat: newCoordinates.latitude,
+        lng: newCoordinates.longitude
+      };
     }
   }
 };
