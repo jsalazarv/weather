@@ -54,6 +54,7 @@ export default {
           lng: event.latLng.lng()
         };
         this.$emit("update:coordinates", this.coords);
+        console.log(this.coords);
       });
 
       google.maps.event.addListener(this.map, "click", event => {

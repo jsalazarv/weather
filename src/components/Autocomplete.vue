@@ -44,7 +44,6 @@ export default {
   },
   watch: {
     search(value) {
-      console.log("Value: ", value);
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         if (value !== "" && value !== null) {
