@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Layout>
+    <Layout :coordinates.sync="coordinates">
       <div id="controls-container">
         <Autocomplete
           class="searcher"
@@ -36,8 +36,8 @@ export default {
   },
   data: () => ({
     coordinates: {
-      latitude: null,
-      longitude: null
+      lat: null,
+      lng: null
     }
   }),
   methods: {
@@ -47,8 +47,8 @@ export default {
     locationDetail(detail) {
       if (detail) {
         this.coordinates = {
-          latitude: detail.latlng[0],
-          longitude: detail.latlng[1]
+          lat: detail.latlng[0],
+          lng: detail.latlng[1]
         };
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <v-autocomplete
-    label="Find location"
+    label="Find country"
     hide-details
     rounded
     solo

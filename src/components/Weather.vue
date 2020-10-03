@@ -82,17 +82,38 @@
 import config from "../config";
 export default {
   name: "Weather",
+  props: {
+    coordinates: {
+      type: Object,
+      default: () => {
+        return { latitude: null, longitude: null };
+      }
+    }
+  },
   data() {
     return {
-      detail: {},
+      detail: {
+        weather: [
+          {
+            description: ""
+          }
+        ],
+        wind: {},
+        clouds: {
+          all: ""
+        },
+        main: {
+          humidity: ""
+        }
+      },
       celsiusDegrees: null,
       imageUrl: null
     };
   },
   methods: {
-    getWeatherData() {
+    getWeatherData(coordinates) {
       const API_KEY = config.openweathermap.keys.api_key;
-      let url = `http://api.openweathermap.org/data/2.5/weather?lat=19.12345&lon=-99.123456&appid=${API_KEY}`;
+      let url = `http://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lng}&appid=${API_KEY}`;
 
       fetch(url)
         .then(response => {
@@ -120,8 +141,12 @@ export default {
       return `http://openweathermap.org/img/wn/${icon}@2x.png`;
     }
   },
-  mounted() {
-    this.getWeatherData();
+  watch: {
+    coordinates(newCoordinates) {
+      if (newCoordinates.lat && newCoordinates.lng) {
+        this.getWeatherData(newCoordinates);
+      }
+    }
   }
 };
 </script>
