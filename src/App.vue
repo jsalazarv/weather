@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <Layout :coordinates.sync="coordinates">
       <div id="controls-container">
         <Autocomplete
           class="searcher"
@@ -17,25 +17,27 @@
           <v-icon>my_location</v-icon>
         </v-btn>
       </div>
-      <Map ref="map" :coordinates.sync="coordinates" />
-    </v-main>
+      <Map class="map" ref="map" :coordinates.sync="coordinates" />
+    </Layout>
   </v-app>
 </template>
 
 <script>
 import Map from "./components/Map";
 import Autocomplete from "./components/Autocomplete";
+import Layout from "./components/Layout";
 
 export default {
   name: "App",
   components: {
+    Layout,
     Autocomplete,
     Map
   },
   data: () => ({
     coordinates: {
-      latitude: null,
-      longitude: null
+      lat: null,
+      lng: null
     }
   }),
   methods: {
@@ -45,8 +47,8 @@ export default {
     locationDetail(detail) {
       if (detail) {
         this.coordinates = {
-          latitude: detail.latlng[0],
-          longitude: detail.latlng[1]
+          lat: detail.latlng[0],
+          lng: detail.latlng[1]
         };
       }
     }
@@ -54,18 +56,23 @@ export default {
 };
 </script>
 <style socped lang="scss">
+.map {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
 #controls-container {
   position: absolute;
   top: 0;
   z-index: 1;
   padding-left: 20px;
   height: 100%;
-  .btn-current-location {
-    bottom: 35px;
-  }
   .searcher {
     top: 10px;
     width: 500px !important;
+  }
+  .btn-current-location {
+    bottom: 35px;
   }
 }
 </style>

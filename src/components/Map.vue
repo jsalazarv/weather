@@ -10,7 +10,7 @@ export default {
     coordinates: {
       type: Object,
       default: () => {
-        return { latitude: null, longitude: null };
+        return { lat: null, lng: null };
       }
     }
   },
@@ -68,17 +68,10 @@ export default {
       this.marker.setPosition(coords);
     },
     initMap() {
-      if (
-        this.coordinates.latitude === null ||
-        this.coordinates.longitude === null
-      ) {
+      if (this.coordinates.lat === null || this.coordinates.lng === null) {
         this.setCurrentCoordinates();
-      }
-      {
-        this.coords = {
-          lat: this.coordinates.latitude,
-          lng: this.coordinates.longitude
-        };
+      } else {
+        this.coords = this.coordinates;
       }
       /*global google */
       this.map = new google.maps.Map(this.$refs.map, {
@@ -106,10 +99,7 @@ export default {
       }
     },
     coordinates(newCoordinates) {
-      this.coords = {
-        lat: newCoordinates.latitude,
-        lng: newCoordinates.longitude
-      };
+      this.coords = newCoordinates;
     }
   }
 };
